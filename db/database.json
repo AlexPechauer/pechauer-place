@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "postgres",
+    "password": "a42e4ebfaa4be78f6d8b",
+    "host": "127.0.0.1",
+    "database": "postgres",
+    "port": "5435",
+    "sslmode": "allow"
+  }
+}

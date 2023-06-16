@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": [
+      "es2021"
+    ],
+    "target": "es2021",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "skipLibCheck": true
+  }
+}
