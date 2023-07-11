@@ -8,8 +8,62 @@ body {
 
 }
 
-.main-header__brand {
+.main-banner {
+  background: lightblue;
   font-family: 'Rubik Vinyl', cursive;
-  color: black;
+}
+
+.main-banner>h1 {
+  margin: 0;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.main-nav {
+  background: darkblue;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  padding: 15px;
+}
+
+.main-nav__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-nav__item {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+.main-nav__item a {
   text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+}
+
+
+.main-nav__item--cta a {
+  color: darkblue;
+  background: lightblue;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.main-nav__item a:hover,
+.main-nav__item a:active {
+  color: white;
+  border-bottom: 5px solid white;
+}
+
+.main-nav__item--cta a:hover,
+.main-nav__item--cta a:active {
+  color: darkblue;
+  background: white;
+  border: none;
 }
