@@ -1,1 +1,1 @@
-export * as Route from './router'
+export * from './router'

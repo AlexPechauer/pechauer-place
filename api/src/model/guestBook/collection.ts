@@ -6,7 +6,6 @@ export class Collection extends BaseModel<Entry.Value> {
   async add(entry: Entry.Value): Promise<string | undefined> {
     const id = this.createId()
 
-    entry.created_by = entry.userId
     entry.created_at = new Date()
     entry.updated_at = new Date()
 

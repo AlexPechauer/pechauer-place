@@ -16,7 +16,6 @@ exports.setup = function (options, seedlink) {
 
 exports.up = function (db) {
   return db.runSql('CREATE TABLE guestbook (id varchar(33) PRIMARY KEY' +
-    ', user_id varchar(33) NOT NULL' +
     ', first_name varchar(50) NULL' +
     ', title varchar(50) NOT NULL' +
     ', message varchar(280) NOT NULL' +

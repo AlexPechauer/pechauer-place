@@ -1,7 +1,7 @@
 import { Express } from 'express'
-import { Route as Auth } from './auth'
-import { Route as Home } from './home'
-import { Route as User } from './user'
+import * as Auth from './auth'
+import * as Home from './home'
+import * as User from './user'
 import { loadConfiguredCors } from '../component/config'
 
 export const startup = (app: Express) => {
