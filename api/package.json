@@ -5,9 +5,7 @@
   "proxy": "http://localhost:4000",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "gulp dbMigrate && gulp watch && gulp build && node dist/server.js",
-    "heroku-postbuild": "gulp default && gulp build",
-    "start": "node dist/server.js",
+    "start": "gulp dbMigrate && gulp watch && tsc && node dist/server.js",
     "lint": "eslint . --ext .ts",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "postversion": "git push --follow-tags"

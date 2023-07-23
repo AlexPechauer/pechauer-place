@@ -3,9 +3,9 @@
     "driver": "pg",
     "user": "postgres",
     "password": "a42e4ebfaa4be78f6d8b",
-    "host": "127.0.0.1",
+    "host": "postgres",
     "database": "postgres",
-    "port": "5435",
+    "port": "5432",
     "sslmode": "allow"
   }
 }

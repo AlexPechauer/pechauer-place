@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    image: pechauer-place-api
+    build:
+      context: ./api
+    command: npm start
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: development
+    env_file:
+      - ./api/.dev.env
+    ports:
+      - "8085:3000"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+  db:
+    image: postgres:latest
+    hostname: 'postgres'
+    env_file:
+      - ./api/.dev.env
+    ports:
+      - '5435:5432'

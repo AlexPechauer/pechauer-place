@@ -8,5 +8,4 @@ if (process.env.NODE_ENV == 'development') {
 
 const app = Express();
 startup(app);
-const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`Fucking rip it`));
+app.listen(process.env.PORT, () => console.log(`Fucking rip it`));

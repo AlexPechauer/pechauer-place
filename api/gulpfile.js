@@ -94,10 +94,9 @@ const tasks = {
   }
 }
 
-exports.dbMigrate = dbMigrate;
 exports.clean = tasks.clean.all,
-  exports.dbMigrate = dbMigrate;
-exports.build = tasks.build.all,
+  exports.dbMigrate = dbMigrate,
+  exports.build = tasks.build.all,
   exports.dist = tasks.dist.all,
   exports.watch = tasks.watch.all,
   exports.default = tasks.dist.all
