@@ -13,7 +13,7 @@ services:
     env_file:
       - ./api/.dev.env
     ports:
-      - "8085:3000"
+      - "8085:3001"
     volumes:
       - ./api:/app
       - /app/node_modules
