@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  frontend:
+    image: pechauer-place-spa
+    build:
+      context: ./spa
+    command: npm start
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+    env_file:
+      - ./spa/.dev.env
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./spa/src:/app/src
+    stdin_open: true
+    tty: true
   backend:
     image: pechauer-place-api
     build:
