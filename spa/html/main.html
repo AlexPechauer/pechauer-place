@@ -16,17 +16,29 @@
 </head>
 
 <body>
-  <header>
+  <div class="backdrop"></div>
+  <!-- <div class="modal">
+    <h1 class="modal__title">Do you want to continue?</h1>
+    <div class="modal__actions">
+      <a href="start-hosting/index.html" class="modal__action">Yes!</a>
+      <button class="modal__action modal__action--negative" type="button">No!</button>
+    </div>
+  </div> -->
+  <header class="main-header">
     <div class="main-banner">
       <h1>PechauerPlace</h1>
     </div>
     <nav class="main-nav">
+      <div>
+        <button class="toggle-button">
+          <span class="toggle-button__bar"></span>
+          <span class="toggle-button__bar"></span>
+          <span class="toggle-button__bar"></span>
+        </button>
+      </div>
       <ul class="main-nav__items">
         <li class="main-nav__item">
           <a href="packages/index.html">Weather</a>
-        </li>
-        <li class="main-nav__item">
-          <a href="customers/index.html">Customers</a>
         </li>
         <li class="main-nav__item main-nav__item--cta">
           <a href="start-hosting/index.html">Login/Signup</a>
@@ -34,6 +46,16 @@
       </ul>
     </nav>
   </header>
+  <nav class="mobile-nav">
+    <ul class="mobile-nav__items">
+      <li class="mobile-nav__item mobile-nav__item--cta">
+        <a href="start-hosting/index.html">Login/Signup</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="packages/index.html">Weather</a>
+      </li>
+    </ul>
+  </nav>
   <main>
     <section class="branches">
       <div class="branches__header">
@@ -44,16 +66,17 @@
         <h1 class="branch__title">A-Town Branch</h1>
         <h3>Get that back to basics feel.</h3>
         <ul class="branch__features">
-          <li>Movie Reviews</li>
-          <li>Delmer Deep Dives</li>
+          <li class="branch__feature">Movie Reviews</li>
+          <li class="branch__feature">Delmer Deep Dives</li>
+          <li class="branch__feature">At Home Cooking</li>
         </ul>
       </article>
       <article class="branch">
         <h1 class="branch__title">Tucson Branch</h1>
         <h3>A little heat, a lot of warmth.</h3>
         <ul class="branch__features">
-          <li>Movie Reviews</li>
-          <li>Guestbook</li>
+          <li class="branch__feature">Movie Reviews</li>
+          <li class="branch__feature">Guestbook</li>
         </ul>
       </article>
       <article class="branch">
@@ -61,8 +84,8 @@
         <h3>Clear eyes, full hearts, never lost.</h3>
         <ul class="branch__features">
           <li>Coffee Bar</li>
-          <li>Late night bar</li>
-          <li>Guestbook</li>
+          <li class="branch__feature">Late night bar</li>
+          <li class="branch__feature">Guestbook</li>
         </ul>
       </article>
     </section>
@@ -82,4 +105,7 @@
       </ul>
     </nav>
   </footer>
+  <script src="../shared.js"></script>
 </body>
+
+</html>
