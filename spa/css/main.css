@@ -192,8 +192,35 @@ body {
   margin: 0.5rem 0;
 }
 
+.feed {
+  background: lightblue;
+  padding-bottom: 1rem;
+}
+
+.feed__header {
+  text-align: center;
+}
+
+.feed h1 {
+  color: darkblue;
+  padding-top: 1rem;
+}
+
+.food {
+  background: white;
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.food__header {}
+
+.food__header h3,
+.food__header h5 {
+  display: inline-block;
+}
+
 .main-footer {
-  background: black;
+  background: darkblue;
   padding: 32px;
   margin-top: 48px;
 }
