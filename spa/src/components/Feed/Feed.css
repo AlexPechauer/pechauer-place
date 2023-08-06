@@ -1,0 +1,13 @@
+.feed {
+  background: lightblue;
+  padding-bottom: 1rem;
+}
+
+.feed__header {
+  text-align: center;
+}
+
+.feed h1 {
+  color: darkblue;
+  padding-top: 1rem;
+}

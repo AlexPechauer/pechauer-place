@@ -1,0 +1,146 @@
+.main-banner {
+  background: lightblue;
+  font-family: 'Rubik Vinyl', cursive;
+  font-size: 1rem;
+}
+
+.main-banner>h1 {
+  margin: 0;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.toggle-button {
+  width: 3rem;
+  background: lightblue;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 2rem;
+  vertical-align: middle;
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+.toggle-button__bar {
+  width: 100%;
+  height: 0.2rem;
+  background: black;
+  display: block;
+  margin: 0.6rem 0;
+}
+
+.main-header {
+  display: unset;
+}
+
+.main-nav {
+  background: darkblue;
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  padding: 15px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+.main-nav__items {
+  display: none;
+}
+
+.main-nav__item {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+.main-nav__item a,
+.mobile-nav__item a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.main-nav__item--cta a,
+.mobile-nav__item--cta a {
+  color: darkblue;
+  background: lightblue;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.main-nav__item a:hover,
+.main-nav__item a:active {
+  color: white;
+  border-bottom: 5px solid white;
+}
+
+.main-nav__item--cta a:hover,
+.main-nav__item--cta a:active,
+.mobile-nav__item--cta a:hover,
+.mobile-nav__item--cta a:active {
+  color: darkblue;
+  background: white;
+  border: none;
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  right: 0;
+  background: darkblue;
+  width: 65%;
+  height: 100vh;
+}
+
+.mobile-nav__items {
+  width: 90%;
+  height: 100%;
+  list-style: none;
+  margin: 10% auto;
+  padding: 0;
+  text-align: center;
+}
+
+.mobile-nav__item {
+  margin: 1rem 0;
+}
+
+.mobile-nav__item a {
+  font-size: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .toggle-button {
+    display: none;
+  }
+
+  .main-nav__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+  }
+
+  .main-banner {
+    font-size: 2rem;
+  }
+
+  .branch {
+    display: inline-block;
+    width: 20vw;
+    height: 20rem;
+    min-width: 13rem;
+    max-width: 25rem;
+    margin: 5px;
+  }
+}

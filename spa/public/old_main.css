@@ -1,0 +1,41 @@
+.backdrop {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+.open {
+  display: block !important;
+}
+
+@media (min-width: 40rem) {
+  .toggle-button {
+    display: none;
+  }
+
+  .main-nav__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+  }
+
+  .main-banner {
+    font-size: 2rem;
+  }
+
+  .branch {
+    display: inline-block;
+    width: 20vw;
+    height: 20rem;
+    min-width: 13rem;
+    max-width: 25rem;
+    margin: 5px;
+  }
+}

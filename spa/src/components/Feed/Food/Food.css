@@ -1,0 +1,12 @@
+.food {
+  background: white;
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.food__header {}
+
+.food__header h3,
+.food__header h5 {
+  display: inline-block;
+}
