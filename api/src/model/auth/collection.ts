@@ -9,17 +9,20 @@ export class Collection extends BaseModel<Auth.Value> {
   async add(object: any): Promise<string | undefined> {
     const id = this.createId()
 
-    const text = 'INSERT INTO auth(id, userId, salt, hash, role) '
+    const text = 'INSERT INTO auth(id, user_id, salt, hash, roles) '
       + 'VALUES($1, $2, $3, $4, $5) RETURNING id;'
 
     const { salt, hash } = this.encrypt(object.password)
     const values = [id, object.userId, salt, hash, object.role]
+
+    console.log('text', text)
+    console.log(' values', values)
     const response = await this.dbCall<Auth.Value>(text, values)
     return response?.id
   }
 
   async validatePassword(object: any): Promise<Actor | undefined> {
-    const text = 'SELECT * FROM auth where userId = $1'
+    const text = 'SELECT * FROM auth where user_id = $1'
     const values = [object.userId.toLowerCase()]
     const resp = await this.dbCall(text, values) as any
 
@@ -29,13 +32,13 @@ export class Collection extends BaseModel<Auth.Value> {
   }
 
   async findOne(userId: string): Promise<Auth.Value | undefined> {
-    const text = 'SELECT * FROM auth where userId = $1'
+    const text = 'SELECT * FROM auth where user_id = $1'
     const values = [userId]
     return await this.dbCall(text, values)
   }
 
   async update(user: { id: string, password: string, role: Role[] }): Promise<string | undefined> {
-    const text = 'UPDATE auth SET salt = $1, hash = $2 WHERE userId = $3 RETURNING id;'
+    const text = 'UPDATE auth SET salt = $1, hash = $2 WHERE user_id = $3 RETURNING id;'
     const { salt, hash } = this.encrypt(user.password)
     const values = [
       salt,

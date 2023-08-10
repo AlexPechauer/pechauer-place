@@ -45,6 +45,8 @@ export class Collection extends BaseModel<User.Value> {
   async findOne(user: string): Promise<User.Value | undefined> {
     const text = 'SELECT * FROM user_profile where id = $1 or username = $1 or email = $1'
     const values = [user.toLowerCase()]
+    console.log('text', text)
+    console.log('values', values)
     return await this.dbCall(text, values)
   }
 }
