@@ -42,9 +42,14 @@ exports.up = function (db) {
   , hash varchar(128) NOT NULL
   , roles smallint [] NOT NULL
   );
+
+  CREATE TABLE branch (id varchar(33) PRIMARY KEY
+  , profile json NOT NULL
+  );
   
   CREATE TABLE guestbook (id varchar(33) PRIMARY KEY
-  , first_name varchar(50) NULL
+  , branch_id varchar(33) NOT NULL REFERENCES branch(id) ON DELETE CASCADE
+  , first_name varchar(50) NOT NULL
   , title varchar(50) NOT NULL
   , message varchar(280) NOT NULL
   , created_by varchar(50)
@@ -68,8 +73,13 @@ exports.up = function (db) {
   );
 
   CREATE TABLE blog_comment(id varchar(33) PRIMARY KEY
+  , blog_id varchar(33) NOT NULL REFERENCES blog ON DELETE CASCADE
   , user_id varchar(50) NOT NULL REFERENCES user_profile(id) ON DELETE CASCADE
   , message varchar(280) NOT NULL
+  , created_by varchar(50)
+  , created_at TIMESTAMP
+  , updated_by varchar(50)
+  , updated_at TIMESTAMP
   );`)
 }
 

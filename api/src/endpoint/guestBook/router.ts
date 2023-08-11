@@ -21,9 +21,12 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    router.post('/',
+    router.post('/branch/:branchId',
       this.bodyInput(),
       this.validate(Model.Guestbook.schema),
+      async (req: any, res: any, next: any) => {
+
+      },
       this.add(this.entries),
       this.renderJson({ statusCode: 201 })
     )
