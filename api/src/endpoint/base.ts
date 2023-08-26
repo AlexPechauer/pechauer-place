@@ -29,6 +29,7 @@ export class Base {
 
   validate = (schema: Joi.ObjectSchema<any>) => {
     return async (req: any, res: any, next: any) => {
+      //TODO: Why am I appending userId here?
       const validated = schema.append({ userId: Joi.string().max(33) }).validate(req.input)
       if (validated.error) {
         res.statusCode = 422

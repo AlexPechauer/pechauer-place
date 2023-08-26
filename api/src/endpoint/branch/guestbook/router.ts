@@ -1,6 +1,6 @@
 import { Router, Express } from 'express'
-import * as Model from '../../model'
-import { Base } from '../base'
+import * as Model from '../../../model'
+import { Base } from '../../base'
 import * as bodyParser from 'body-parser'
 
 export class Route extends Base {
@@ -21,12 +21,15 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    router.post('/branch/:branchId',
+    router.post('/:branchId/guestbook',
+      this.paramsInput(),
       this.bodyInput(),
-      this.validate(Model.Guestbook.schema),
       async (req: any, res: any, next: any) => {
-
+        console.log('req.input', req.input)
+        await next()
       },
+      this.validate(Model.Guestbook.schema),
+
       this.add(this.entries),
       this.renderJson({ statusCode: 201 })
     )

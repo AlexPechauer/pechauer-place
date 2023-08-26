@@ -1,14 +1,16 @@
 import { Express } from 'express'
-import * as Auth from './auth'
-import * as Home from './home'
-import * as User from './user'
+import { Auth, Branch, Home, User } from './index'
 import { loadConfiguredCors } from '../component/config'
+
 
 export const startup = (app: Express) => {
   app.use(loadConfiguredCors())
 
   const auth = new Auth.Route(app)
   app.use(route('auth'), auth.build())
+
+  const branch = new Branch.SubRoutes(app)
+  app.use(route('branch'), branch.build())
 
   const home = new Home.Route(app)
   app.use(route(), home.build())
