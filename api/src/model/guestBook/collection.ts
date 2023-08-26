@@ -6,22 +6,22 @@ export class Collection extends BaseModel<Entry.Value> {
   async add(entry: Entry.Value): Promise<string | undefined> {
     const id = this.createId()
 
-    entry.created_at = new Date()
-    entry.updated_at = new Date()
+    entry.createdAt = new Date()
+    entry.updatedAt = new Date()
 
     const text = 'INSERT INTO guestbook(id, branch_id, first_name, title, message, created_by, created_at, updated_by, updated_at) '
       + 'VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id;'
 
     const values = [
       id,
-      entry.branch_id,
-      entry.first_name.toLowerCase(),
+      entry.branchId,
+      entry.firstName.toLowerCase(),
       entry.title,
       entry.message,
-      entry.created_by,
-      entry.created_at,
-      entry.updated_by,
-      entry.updated_at
+      entry.createdBy,
+      entry.createdAt,
+      entry.updatedBy,
+      entry.updatedAt
     ]
     const response = await this.dbCall<Entry.Value>(text, values)
 
@@ -38,11 +38,11 @@ export class Collection extends BaseModel<Entry.Value> {
     const text = 'UPDATE guestbook SET username = $1, first_name = $2, title = $3, message = $4, updated_by = $5, updated_at = $6, WHERE id = $1 RETURNING id;'
 
     const values = [
-      entry.first_name.toLowerCase(),
+      entry.firstName.toLowerCase(),
       entry.title,
       entry.message,
-      entry.updated_by,
-      entry.updated_at
+      entry.updatedBy,
+      entry.updatedAt
     ]
 
     const response = await this.dbCall<Entry.Value>(text, values)
@@ -50,7 +50,7 @@ export class Collection extends BaseModel<Entry.Value> {
   }
 
   //TODO: paginate
-  async findAll(branch_id: string) {
+  // async findAll(branch_id: string) {
 
-  }
+  // }
 }

@@ -29,8 +29,8 @@ export interface Value {
 export const schema = Joi.object({
   id: Joi.string().max(33),
   username: Joi.string().max(50).required(),
-  first_name: Joi.string().max(50).required(),
-  last_name: Joi.string().max(50),
+  firstName: Joi.string().max(50).required(),
+  lastName: Joi.string().max(50),
   status: Joi.string().valid(...Object.values(Status)).default(Status.ACTIVE),
   address: Joi.object({
     street: Joi.string().max(50),
@@ -39,9 +39,9 @@ export const schema = Joi.object({
     country: Joi.string().max(50),
   }),
   email: Joi.string().email(),
-  created_by: Joi.string(),
-  created_at: Joi.date(),
-  updated_by: Joi.string(),
-  updated_at: Joi.date()
+  createdBy: Joi.string(),
+  createdAt: Joi.date(),
+  updatedBy: Joi.string(),
+  updatedAt: Joi.date()
 })
 

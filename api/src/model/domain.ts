@@ -12,8 +12,8 @@ export interface Encrypted {
 
 export const modifiers = [
   'id',
-  'created_by',
-  'created_at',
-  'updated_by',
-  'updated_at'
+  'createdBy',
+  'createdAt',
+  'updatedBy',
+  'updatedAt'
 ]

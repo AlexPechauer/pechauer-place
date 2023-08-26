@@ -3,9 +3,19 @@ import * as Crypto from 'crypto'
 import { loadDbConfig } from '../component/config'
 import { IModel, Encrypted } from './domain'
 
-export class BaseModel<Item> implements IModel<Item> {
+interface BaseItem {
+  id: string
+}
+
+export class BaseModel<Item extends BaseItem> implements IModel<Item> {
 
   client: Client
+
+  name: string
+
+  private get tableName() {
+    return this.camelToSnake(this.name)
+  }
 
   constructor() {
     const credentials = loadDbConfig()
@@ -25,12 +35,19 @@ export class BaseModel<Item> implements IModel<Item> {
   createId(): string { return this.hex() }
 
   async add(object: Item): Promise<string | undefined> {
-    console.log('Db add function not implemented.')
-    return undefined
+    const { columns, dollars, values } = this.genColsDolsVals(object)
+    const text = `INSERT INTO ${this.tableName}(${columns}) VALUES(${dollars}) RETURNING id;`
+    const response = await this.dbCall<Item>(text, values)
+    return response?.id
   }
 
   async update(object: Partial<Item>): Promise<string | undefined> {
     console.log('Db update function not implemented.')
+    return undefined
+  }
+
+  async findAll(value: string): Promise<Item | undefined> {
+    console.log('Db findAll function not implemented.')
     return undefined
   }
 
@@ -46,11 +63,44 @@ export class BaseModel<Item> implements IModel<Item> {
 
   async dbCall<Item>(text: string, values: any[]): Promise<Item | undefined> {
     try {
-      const res = await (this.client.query(text, values) as any)
+      const insertValues = values.map(x => x.toLowerCase())
+      const res = await (this.client.query(text, insertValues) as any)
       return res.rows[0]
     } catch (err) {
-      console.log(err.stack)
+      console.log('Db messed up or something, ', err.stack)
     }
     return undefined
   }
+
+  camelToSnake = (x: any) => x.toString().replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+
+  columnNamesGenerator = (object: Item) => this.camelToSnake(Object.keys(object))
+
+  valuesGenerator = (object: Item) => Object.values(object).map((x) => {
+    switch (typeof x) {
+      case 'string': {
+        x.toLowerCase()
+        break
+      }
+      case 'object': {
+        x = JSON.stringify(x)
+        break
+      }
+      default: {
+        break
+      }
+    }
+    return x
+  })
+
+  dollarSignValuesGenerator = (object: Item) => Array.from({ length: Object.keys(object).length }, (_, index) => '$' + (index + 1).toString())
+
+  genColsDolsVals = (object: Item) => {
+    return {
+      columns: this.columnNamesGenerator(object),
+      dollars: this.dollarSignValuesGenerator(object),
+      values: this.valuesGenerator(object)
+    }
+  }
+
 }

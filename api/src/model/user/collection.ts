@@ -3,18 +3,14 @@ import * as User from './domain'
 
 export class Collection extends BaseModel<User.Value> {
 
+  name = 'userProfile'
+
   async add(user: User.Value): Promise<string | undefined> {
-    const id = this.createId()
+    user.id = this.createId()
     user.created_at = new Date()
     user.updated_at = new Date()
 
-    const text = 'INSERT INTO user_profile(id, username, first_name, last_name, status, email, address, created_by, created_at, updated_by, updated_at) '
-      + 'VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id;'
-
-    const values = [id, user.username.toLowerCase(), user.first_name.toLowerCase(), user.last_name.toLowerCase(), user.status, user.email.toLowerCase(), user.address, user.created_by, user.created_at, user.updated_by, user.updated_at]
-    const response = await this.dbCall<User.Value>(text, values)
-
-    return response?.id
+    return super.add(user)
   }
 
   async delete(user: string): Promise<void> {
