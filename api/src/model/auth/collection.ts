@@ -9,7 +9,7 @@ export class Collection extends BaseModel<Auth.Value> {
 
   name = 'auth'
 
-  columns = Object.keys(Auth.schema)
+  columns = Object.keys(Auth.schema.describe().keys)
 
   async add(credentials: any): Promise<string | undefined> {
     const { salted, hashed } = encrypt(credentials.password)
