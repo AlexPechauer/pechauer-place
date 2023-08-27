@@ -15,18 +15,18 @@ export interface Address {
 export interface Value {
   id: string
   username: string
-  first_name: string
-  last_name: string
+  firstName: string
+  lastName: string
   status: string
   address: Address
   email: string
-  created_by: string
-  created_at: Date
-  updated_by: string
-  updated_at: Date
+  createdBy: string
+  createdAt: Date
+  updatedBy: string
+  updatedAt: Date
 }
 
-export const schema = Joi.object({
+export const schema = Joi.object<Value>({
   id: Joi.string().max(33),
   username: Joi.string().max(50).required(),
   firstName: Joi.string().max(50).required(),

@@ -1,24 +1,26 @@
 import { BaseModel } from '../base'
 import { Actor, Role } from './role/domain'
 import * as Auth from './domain'
+import { pick } from 'lodash'
+import { createId, encrypt, hash } from '../utils'
+import { Criteria } from '../domain'
 
 export class Collection extends BaseModel<Auth.Value> {
 
-  //TODO: Add db name here so you can pul the adds to base and abstract that shit
-  //TODO: Youll have to set up criteria too
-  async add(object: any): Promise<string | undefined> {
-    const id = this.createId()
+  name = 'auth'
 
-    const text = 'INSERT INTO auth(id, user_id, salt, hash, roles) '
-      + 'VALUES($1, $2, $3, $4, $5) RETURNING id;'
+  columns = Object.keys(Auth.schema)
 
-    const { salt, hash } = this.encrypt(object.password)
-    const values = [id, object.userId, salt, hash, object.role]
+  async add(credentials: any): Promise<string | undefined> {
+    const { salted, hashed } = encrypt(credentials.password)
+    const auth = {
+      id: createId(),
+      salted,
+      hashed,
+      ...pick(credentials, 'userId', 'roles')
+    }
 
-    console.log('text', text)
-    console.log(' values', values)
-    const response = await this.dbCall<Auth.Value>(text, values)
-    return response?.id
+    return super.add(auth as any)
   }
 
   async validatePassword(object: any): Promise<Actor | undefined> {
@@ -26,23 +28,24 @@ export class Collection extends BaseModel<Auth.Value> {
     const values = [object.userId.toLowerCase()]
     const resp = await this.dbCall(text, values) as any
 
-    if (resp.hash != this.hash(object.password, resp.salt)) { return undefined }
+    if (resp.hash != hash(object.password, resp.salt)) { return undefined }
 
     return { id: object.userId, role: resp.role }
   }
 
-  async findOne(userId: string): Promise<Auth.Value | undefined> {
+  async findOne(criteria: Criteria): Promise<Auth.Value | undefined> {
     const text = 'SELECT * FROM auth where user_id = $1'
-    const values = [userId]
+    // const values = [userId]
+    const values = ['userId']
     return await this.dbCall(text, values)
   }
 
   async update(user: { id: string, password: string, role: Role[] }): Promise<string | undefined> {
     const text = 'UPDATE auth SET salt = $1, hash = $2 WHERE user_id = $3 RETURNING id;'
-    const { salt, hash } = this.encrypt(user.password)
+    const { salted, hashed } = encrypt(user.password)
     const values = [
-      salt,
-      hash,
+      salted,
+      hashed,
       // user.role,
       user.id
     ]

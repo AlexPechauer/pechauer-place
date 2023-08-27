@@ -6,7 +6,11 @@ export interface Value {
   userId: string
   salt: string
   hash: string
-  role: Role[]
+  roles: Role[]
+}
+
+export interface Credentials extends Value {
+  password: string
 }
 
 export const schema = Joi.object({
@@ -14,5 +18,5 @@ export const schema = Joi.object({
   userId: Joi.string().max(33).required(),
   salt: Joi.string().max(33).required(),
   hash: Joi.string().max(128).required(),
-  role: Joi.string().valid(...Object.values(Role)).default(4)
+  roles: Joi.string().valid(...Object.values(Role)).default(4)
 })

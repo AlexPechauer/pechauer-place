@@ -47,13 +47,13 @@ export class Route extends Base {
       this.validate(Joi.object({
         username: Joi.string().max(33),
         email: Joi.string().email(),
-        role: Joi.array().items(Joi.string().valid(...Object.values(Role)).default(Role.USER)),
+        roles: Joi.array().items(Joi.string().valid(...Object.values(Role)).default(Role.USER)),
         password: Joi.string().min(8).max(20).required()
       })
       ),
       async (req: any, res: any, next: any) => {
         await next()
-        req.input.role = req.input.role.map((r: any) => Role[r])
+        req.input.roles = req.input.roles.map((r: any) => Role[r])
 
         const userIdentifier = req.input.username ?? req.input.email
         if (!userIdentifier) { this.fail(res, 422, `body.username`, 'value required'); return }
@@ -62,10 +62,10 @@ export class Route extends Base {
         if (!userResp) { this.fail(res, 404, `body.${req.input.username ? 'username' : 'email'} `, 'value does not exist'); return }
         const user = userResp
 
-        const authResp = await this.auth.findOne(user.id)
+        const authResp = await this.auth.findOne([{ column: 'id', value: user.id }])
         if (authResp) { this.fail(res, 422, `body.${req.input.username ? 'username' : 'email'} `, 'value already exists'); return }
 
-        const id = await this.auth.add({ userId: userResp.id, password: req.input.password, role: req.input.role })
+        const id = await this.auth.add({ userId: userResp.id, password: req.input.password, roles: req.input.roles })
         res.status(201).json({ id })
         return
       }

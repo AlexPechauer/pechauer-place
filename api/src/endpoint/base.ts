@@ -30,7 +30,8 @@ export class Base {
   validate = (schema: Joi.ObjectSchema<any>) => {
     return async (req: any, res: any, next: any) => {
       //TODO: Why am I appending userId here?
-      const validated = schema.append({ userId: Joi.string().max(33) }).validate(req.input)
+      // const validated = schema.append({ userId: Joi.string().max(33) }).validate(req.input)
+      const validated = schema.validate(req.input)
       if (validated.error) {
         res.statusCode = 422
         const details = validated.error.details[0]
@@ -49,7 +50,7 @@ export class Base {
       try {
         const id = await collection.add(req.input)
         if (!id) { throw Error('Unable to add instance') }
-        req.response = await collection.findOne(id)
+        req.response = await collection.findOne([{ column: 'id', value: id }])
       } catch (error) {
         console.log('error adding to database', error)
         res.json({
@@ -62,13 +63,16 @@ export class Base {
     }
   }
 
-  update = <Item>(collection: IModel<Item>) => {
+  update = <Item>(collection: IModel<Item>, value: string) => {
     return async (req: any, res: any, next: any) => {
       const obj = { ...req.response, ...req.input }
+      const criteria = [{ column: 'id', value: req.params[value] }]
       try {
-        const id = await collection.update(obj)
+        const id = await collection.update(obj, criteria)
         if (id) {
-          req.response = await collection.findOne(id)
+          console.log('id', id)
+          req.response = await collection.findOne([{ column: 'id', value: id }])
+          console.log('req.response', req.response)
         }
       } catch (error) {
         console.log('Error updating database', error)
@@ -85,7 +89,8 @@ export class Base {
   getOne = <Item>(collection: IModel<Item>, value: string) => {
     return async (req: any, res: any, next: any) => {
       try {
-        const instance = await collection.findOne(req.input[value].toLowerCase())
+        const criteria = [{ column: 'id', value: req.params[value] }]
+        const instance = await collection.findOne(criteria)
         if (!instance) {
           res.statusCode = 404
           res.json({
@@ -109,8 +114,9 @@ export class Base {
 
   delete = <Item>(collection: IModel<Item>, value: string) => {
     return async (req: any, res: any, next: any) => {
+      const criteria = [{ column: 'id', value: req.params[value] }]
       try {
-        await collection.delete(req.input[value].toLowerCase())
+        await collection.delete(criteria)
       } catch (error) {
         console.log('error deleting from database', error)
         res.json({
