@@ -23,7 +23,7 @@ export class Route extends Base {
 
     //TODO: Get all pagination
 
-    router.post('/',
+    router.post('',
       this.bodyInput(),
       this.validate(Model.User.schema),
       async (req: any, res: any, next: any) => {

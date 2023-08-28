@@ -1,6 +1,6 @@
-import { BaseModel } from '../base'
-import { Criteria } from '../domain'
-import { createId } from '../utils'
+import { BaseModel } from '../../base'
+import { Criteria } from '../../domain'
+import { createId } from '../../utils'
 import * as Entry from './domain'
 
 export class Collection extends BaseModel<Entry.Value> {

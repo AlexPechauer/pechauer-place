@@ -1,4 +1,3 @@
-//TODO: Move role under User
 export enum Role {
   SUPER_ADMIN,
   ADMIN,

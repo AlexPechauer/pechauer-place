@@ -17,7 +17,7 @@ export class Route extends Base {
 
     const router = Router()
 
-    router.get('/',
+    router.get('',
       cors(),
       async (req: any, res: any, next: any) => {
         console.log('req.get(origin)', req.get('origin'))

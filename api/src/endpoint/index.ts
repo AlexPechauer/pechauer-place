@@ -1,4 +1,5 @@
 export * as Auth from './auth'
+export * as Blog from './blog'
 export * as Branch from './branch'
 export * as Home from './home'
 export * as User from './user'

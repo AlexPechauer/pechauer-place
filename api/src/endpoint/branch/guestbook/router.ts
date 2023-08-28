@@ -5,12 +5,12 @@ import * as bodyParser from 'body-parser'
 
 export class Route extends Base {
 
-  entries: Model.Guestbook.Collection
+  entries: Model.Branch.Guestbook.Collection
 
   constructor(app: Express) {
     super(app)
 
-    this.entries = new Model.Guestbook.Collection()
+    this.entries = new Model.Branch.Guestbook.Collection()
   }
 
   build = (): Router => {
@@ -21,23 +21,23 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    router.post('/:branchId/guestbook',
+    router.post('',
       this.paramsInput(),
       this.bodyInput(),
       async (req: any, res: any, next: any) => {
         console.log('req.input', req.input)
         await next()
       },
-      this.validate(Model.Guestbook.schema),
+      this.validate(Model.Branch.Guestbook.schema),
 
       this.add(this.entries),
       this.renderJson({ statusCode: 201 })
     )
 
-    router.get('/',
+    router.get('/:entry',
     )
 
-    router.put('/',
+    router.put('/:entry',
     )
 
     router.delete('/:entry',

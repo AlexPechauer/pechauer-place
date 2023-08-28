@@ -1,4 +1,4 @@
-import * as Guestbook from './guestbook'
+import * as Comment from './comment'
 import { Router, Express } from 'express'
 import { Base } from '../base'
 import * as bodyParser from 'body-parser'
@@ -19,17 +19,20 @@ export class Routes extends Base {
       bodyParser.json()
     )
 
-    router.get('/:branchId',
+    router.post('',
     )
 
-    router.put('/:branchId',
+    router.get('/:blogId',
     )
 
-    router.delete('/:branchId',
+    router.put('/:blogId',
+    )
+
+    router.delete('/:blogId',
     )
 
     return [
-      new Guestbook.Route(this.app.use('/:branchId/guestbook')).build(),
+      new Comment.Route(this.app.use('/:blogId/comment')).build(),
       router
     ]
   }
