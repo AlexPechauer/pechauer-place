@@ -21,16 +21,20 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    router.post('',
+    router.post('/:blogId/comments',
     )
 
-    router.get('/:commentId',
+    router.get('/:blogId/comments/:commentId',
+      async (req: any, res: any, next: any) => {
+        console.log('herere')
+        await next()
+      },
     )
 
-    router.put('/:commentId',
+    router.put('/:blogId/comments/:commentId',
     )
 
-    router.delete('/:commentId',
+    router.delete('/:blogId/comments/:commentId',
     )
 
     return router

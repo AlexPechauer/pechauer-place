@@ -1,13 +1,13 @@
-import { Criteria, Encrypted, Expression } from './domain'
+import { Criteria, Encrypted, Expression, Predicate } from './domain'
 import * as Crypto from 'crypto'
 
 export const hex = (): string => { return Crypto.randomBytes(33).toString('hex').substring(0, 32) }
-export const hash = (value: string, salt: string): string => { return Crypto.pbkdf2Sync(value, salt, 1000, 64, `sha512`).toString(`hex`) }
+export const hasher = (value: string, salt: string): string => { return Crypto.pbkdf2Sync(value, salt, 1000, 64, `sha512`).toString(`hex`) }
 
 export const encrypt = (value: string): Encrypted => {
-  const salted = hex()
-  const hashed = hash(value, salted)
-  return { salted, hashed }
+  const salt = hex()
+  const hash = hasher(value, salt)
+  return { salt, hash }
 }
 
 export const createId = (): string => { return hex() }
@@ -38,7 +38,7 @@ const ingestCriteria = (criteria: Criteria, sqlStatement: string, iteration: num
   const length = criteria.length
   if (length > 0) {
     const predicate = criteria.shift()
-    sqlStatement = `${sqlStatement} ${predicate?.column} ${sqlExpression(predicate?.expression)} $${iteration}`
+    sqlStatement = `${sqlStatement} ${camelToSnake((predicate as Predicate).column)} ${sqlExpression(predicate?.expression)} $${iteration}`
     if (length > 1) {
       sqlStatement = `${sqlStatement} ${predicate?.combinator == undefined ? 'AND' : predicate?.combinator}`
     }

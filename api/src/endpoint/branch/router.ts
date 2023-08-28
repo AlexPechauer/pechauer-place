@@ -29,7 +29,8 @@ export class Routes extends Base {
     )
 
     return [
-      new Guestbook.Route(this.app.use('/:branchId/guestbook')).build(),
+      new Guestbook.Route(this.app).build(),
+      // this.app.use('/:branchId/guestbook', new Guestbook.Route(this.app).build()),
       router
     ]
   }

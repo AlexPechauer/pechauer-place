@@ -1,5 +1,6 @@
 import * as Joi from 'joi'
 
+//TODO: Add users
 export interface Value {
   id: string,
   profile: Record<string, any>

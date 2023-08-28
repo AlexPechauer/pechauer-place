@@ -7,8 +7,8 @@ export interface IModel<Item> {
 }
 
 export interface Encrypted {
-  salted: string,
-  hashed: string
+  salt: string,
+  hash: string
 }
 
 export const modifiers = [

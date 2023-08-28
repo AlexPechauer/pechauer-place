@@ -15,5 +15,5 @@ export const all = [
 
 export interface Actor {
   id: string,
-  role: (string | Role)[]
+  roles: (string | Role)[]
 }    

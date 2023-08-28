@@ -27,7 +27,6 @@ export class Authorize {
   }
 
   accredit = (actor: Actor): { token: string } => {
-
     const jwtPayload = {
       actor,
       timestamp: new Date().toString()
@@ -48,7 +47,7 @@ export class Authorize {
         const expired = this.jwtTimeout <= (new Date().getTime() - new Date(payload.timestamp).getTime())
         if (expired) { return res.status(403).json({ message: 'unauthorization' }) }
 
-        const can = roles.some(role => payload.actor.role.includes(role))
+        const can = roles.some(role => payload.actor.roles.includes(role))
         if (!can) { return res.status(403).json({ message: 'unauthorization' }) }
         req.input = { userId: payload.actor.id, ...req.input }
       } catch (err) {

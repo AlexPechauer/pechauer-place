@@ -48,6 +48,9 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     }
     text = `${text} ${whereStatement} RETURNING id;`
 
+    console.log('text', text)
+    console.log('values', values)
+
     const response = await this.dbCall<Item>(text, values)
     return response?.id
   }
@@ -60,6 +63,7 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
   async findOne(criteria: Criteria): Promise<Item | undefined> {
     const values = criteria.map(c => c.value)
     const whereStatement = whereStatementBuilder(criteria)
+    console.log('whereStatement', whereStatement)
     const text = `SELECT ${this.columnNames} FROM ${this.tableName} ${whereStatement};`
     const row = await this.dbCall<Item>(text, values)
     //TODO: Clean this up

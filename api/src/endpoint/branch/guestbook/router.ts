@@ -21,7 +21,7 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    router.post('',
+    router.post('/:branchId/guestbook',
       this.paramsInput(),
       this.bodyInput(),
       async (req: any, res: any, next: any) => {
@@ -34,13 +34,13 @@ export class Route extends Base {
       this.renderJson({ statusCode: 201 })
     )
 
-    router.get('/:entry',
+    router.get('/:branchId/guestbook/:entry',
     )
 
-    router.put('/:entry',
+    router.put('/:branchId/guestbook/:entry',
     )
 
-    router.delete('/:entry',
+    router.delete('/:branchId/guestbook/:entry',
     )
 
     return router

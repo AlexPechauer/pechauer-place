@@ -1,11 +1,14 @@
 import * as Comment from './comment'
 import { Router, Express } from 'express'
+import * as Model from '../../model'
 import { Base } from '../base'
 import * as bodyParser from 'body-parser'
 
 export class Routes extends Base {
 
   app: Express
+
+  blogs: Model.Blog.Collection
 
   constructor(app: Express) {
     super(app)
@@ -20,6 +23,14 @@ export class Routes extends Base {
     )
 
     router.post('',
+      this.authorize.can(),
+      this.bodyInput(),
+      this.validate(Model.Blog.schema),
+      this.add(this.blogs),
+      this.renderJson({ statusCode: 201 }),
+      async (req: any, res: any, next: any) => {
+        console.log('here!')
+      }
     )
 
     router.get('/:blogId',
@@ -32,7 +43,7 @@ export class Routes extends Base {
     )
 
     return [
-      new Comment.Route(this.app.use('/:blogId/comment')).build(),
+      new Comment.Route(this.app).build(),
       router
     ]
   }

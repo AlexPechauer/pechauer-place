@@ -3,7 +3,7 @@ import * as Model from '../../model'
 import { Base } from '../base'
 import * as bodyParser from 'body-parser'
 import Joi = require('joi')
-import { Role } from '../../model/auth/role'
+import { Actor, Role } from '../../model/auth/role'
 
 export class Route extends Base {
 
@@ -30,6 +30,7 @@ export class Route extends Base {
       this.authorize.can(),
       this.bodyInput(),
       this.validate(Joi.object({
+        userId: Joi.string(),
         oldPassword: Joi.string().min(8).max(20).required(),
         newPassword: Joi.string().min(8).max(20).required()
         //TODO: Update role
@@ -37,7 +38,8 @@ export class Route extends Base {
       })),
       async (req: any, res: any, next: any) => {
         //TODO: Validate old password
-        const id = await this.auth.update({ id: req.input.userId, password: req.input.newPassword, role: req.input.role })
+        const id = await this.auth.update({ id: req.input.userId, password: req.input.newPassword, role: req.input.role },
+          [{ column: 'userId', value: req.input.userId, }])
         res.status(201).json({ id })
       }
     )
@@ -58,7 +60,11 @@ export class Route extends Base {
         const userIdentifier = req.input.username ?? req.input.email
         if (!userIdentifier) { this.fail(res, 422, `body.username`, 'value required'); return }
 
-        const userResp = await this.users.findOne(userIdentifier)
+        const criteria: Model.Criteria = [
+          { column: 'username', value: req.input.username, combinator: Model.Combinator.OR },
+          { column: 'email', value: req.input.email }
+        ]
+        const userResp = await this.users.findOne(criteria)
         if (!userResp) { this.fail(res, 404, `body.${req.input.username ? 'username' : 'email'} `, 'value does not exist'); return }
         const user = userResp
 
@@ -84,13 +90,17 @@ export class Route extends Base {
         const userIdentifier = req.input.username ?? req.input.email
         if (!userIdentifier) { this.fail(res, 422, `body.user`, 'value required'); return }
 
-        const userResp = await this.users.findOne(userIdentifier)
+        const criteria: Model.Criteria = [
+          { column: 'username', value: req.input.username, combinator: Model.Combinator.OR },
+          { column: 'email', value: req.input.email }
+        ]
+        const userResp = await this.users.findOne(criteria)
         if (!userResp) { this.fail(res, 404, `body.user`, 'value does not exist'); return }
         const user = userResp
 
-        const authResp = await this.auth.validatePassword({ userId: user.id, password: req.input.password })
-        if (!authResp) { this.fail(res, 422, `body.password`, 'value does not exist'); return }
-        const actor = authResp
+        const roles = await this.auth.validatePassword(req.input.password, [{ column: 'userId', value: user.id }])
+        if (!roles) { this.fail(res, 422, `body.password`, 'value does not exist'); return }
+        const actor: Actor = { id: user.id, roles: roles }
 
         res.status(200).json(this.authorize.accredit(actor))
         return
