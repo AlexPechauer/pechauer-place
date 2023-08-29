@@ -1,0 +1,821 @@
+{
+	"info": {
+		"_postman_id": "8a18cce4-4457-4745-8166-1ef143d4b883",
+		"name": "PechauerPlace",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"12345678\",\n    \"roles\": [\"ADMIN\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"if(jsonData.token){",
+									"    postman.setEnvironmentVariable(\"token\", jsonData.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"12345678\",\n    \"newPassword\": \"87654321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/change",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Recover",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/auth/recover",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"recover"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "Entry",
+					"item": [
+						{
+							"name": "Comment",
+							"item": [
+								{
+									"name": "NI_Comments",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/blogs/{{blogId}}/comments",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"blogs",
+												"{{blogId}}",
+												"comments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Comment",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/blogs/{{blogId}}/comments",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"blogs",
+												"{{blogId}}",
+												"comments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Comment",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/blogs/{{blogId}}/comments/{{commentId}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"blogs",
+												"{{blogId}}",
+												"comments",
+												"{{commentId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Comment",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/blogs/{{blogId}}/comments/{{commentId}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"blogs",
+												"{{blogId}}",
+												"comments",
+												"{{commentId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Comment",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/blogs/{{blogId}}/comments/{{commentId}}",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"blogs",
+												"{{blogId}}",
+												"comments",
+												"{{commentId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "NI_Entries",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Entry",
+							"request": {
+								"method": "POST",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Entry",
+							"request": {
+								"method": "PUT",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Entry",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Entry",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"1fe638b84d0683edc8b55588b28de60f\",\n    \"blogTypeId\": \"GENERAL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/blogs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Blogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/blogs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/blogs/{{blogId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{blogId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/blogs/{{blogId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"{{blogId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Blog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/blogs/fccda8fc28da6f2d8bbf6b36c3526d17",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								"fccda8fc28da6f2d8bbf6b36c3526d17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Branch",
+			"item": [
+				{
+					"name": "Guestbook",
+					"item": [
+						{
+							"name": "Entry",
+							"item": [
+								{
+									"name": "NI_Entry",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/branch/{{branchId}}/guestbook",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"branch",
+												"{{branchId}}",
+												"guestbook"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Entry",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"Alex\",\n    \"title\": \"great time!\",\n    \"message\": \"had a great time at Pechauer Tucson!\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/branch/{{branchId}}/guestbook",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"branch",
+												"{{branchId}}",
+												"guestbook"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Entries",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/branch/{{branchId}}/guestbook",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"branch",
+												"{{branchId}}",
+												"guestbook"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Entry",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/branch/{{branchId}}/guestbook",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"branch",
+												"{{branchId}}",
+												"guestbook"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "NI_Entry",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/branch/{{branchId}}/guestbook",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"branch",
+												"{{branchId}}",
+												"guestbook"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "NI_Guestbooks",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Guestbook",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Guestbook Copy",
+							"request": {
+								"method": "POST",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Guestbook",
+							"request": {
+								"method": "PUT",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "NI_Guestbook",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "NI_Branches",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Branch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Branch",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Branch",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "NI_Branch",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"item": [
+				{
+					"name": "Home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"if(jsonData.id){",
+									"    postman.setEnvironmentVariable(\"username\", jsonData.username);",
+									"    postman.setEnvironmentVariable(\"userEmail\", jsonData.email);",
+									"    postman.setEnvironmentVariable(\"user\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"aPech12\",\n    \"firstName\": \"alex\",\n    \"lastName\": \"pechauer\",\n    \"status\": \"active\",\n    \"email\": \"someEmail12@gmail.com\",\n    \"address\": {\n        \"street\": \"some street\",\n        \"city\": \"some city\",\n        \"zipCode\": \"60002\",\n        \"country\": \"USA\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/users/{{user}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"apech\",\n    \"first_name\": \"alex2\",\n    \"last_name\": \"pechauerdatnewnew\",\n    \"status\": \"active\",\n    \"email\": \"someemail1@gmail.com\",\n    \"address\": {\n        \"street\": \"some street\",\n        \"city\": \"some city\",\n        \"zipCode\": \"60002\",\n        \"country\": \"USAUSA\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/{{user}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/users/{{user}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
