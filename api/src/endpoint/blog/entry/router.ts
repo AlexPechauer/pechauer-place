@@ -1,4 +1,4 @@
-import * as Entry from './entry'
+import * as Comment from './comment'
 import { Router, Express } from 'express'
 import * as Model from '../../../model'
 import { Base } from '../../base'
@@ -24,7 +24,7 @@ export class Routes extends Base {
       bodyParser.json()
     )
 
-    router.post('guestbook/',
+    router.post('entries/',
     )
 
     router.get('entries/:entryId',
@@ -37,7 +37,7 @@ export class Routes extends Base {
     )
 
     return [
-      new Entry.Route(this.app).build(),
+      new Comment.Route(this.app).build(),
       router
     ]
   }

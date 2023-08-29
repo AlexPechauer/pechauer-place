@@ -21,5 +21,4 @@ export class Collection extends BaseModel<User.Value> {
     user.updatedAt = new Date()
     return super.update(user, criteria)
   }
-
 }

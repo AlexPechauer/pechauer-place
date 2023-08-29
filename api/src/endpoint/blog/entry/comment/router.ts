@@ -1,16 +1,16 @@
 import { Router, Express } from 'express'
-import * as Model from '../../../model'
-import { Base } from '../../base'
+import * as Model from '../../../../model'
+import { Base } from '../../../base'
 import * as bodyParser from 'body-parser'
 
 export class Route extends Base {
 
-  comments: Model.Blog.Comment.Collection
+  comments: Model.Blog.Entry.Comment.Collection
 
   constructor(app: Express) {
     super(app)
 
-    this.comments = new Model.Blog.Comment.Collection()
+    this.comments = new Model.Blog.Entry.Comment.Collection()
   }
 
   build = (): Router => {

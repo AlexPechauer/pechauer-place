@@ -1,4 +1,4 @@
-import * as Comment from './comment'
+import * as Entry from './entry'
 import { Router, Express } from 'express'
 import * as Model from '../../model'
 import { Base } from '../base'
@@ -13,6 +13,8 @@ export class Routes extends Base {
   constructor(app: Express) {
     super(app)
     this.app = app
+
+    this.blogs = new Model.Blog.Collection()
   }
 
   build = (): Router[] => {
@@ -23,27 +25,35 @@ export class Routes extends Base {
     )
 
     router.post('',
-      this.authorize.can(),
+      // this.authorize.can(),
       this.bodyInput(),
       this.validate(Model.Blog.schema),
-      this.add(this.blogs),
-      this.renderJson({ statusCode: 201 }),
       async (req: any, res: any, next: any) => {
-        console.log('here!')
-      }
+        req.input.blogTypeId = Model.Blog.Type.Type[req.input.blogTypeId]
+        await next()
+      },
+      this.add(this.blogs),
+      this.renderJson({ statusCode: 201 })
     )
 
     router.get('/:blogId',
+      this.paramsInput(),
+      this.getOne(this.blogs, 'blogId'),
+      this.renderJson()
     )
 
     router.put('/:blogId',
     )
 
     router.delete('/:blogId',
+      this.paramsInput(),
+      this.getOne(this.blogs, 'blogId'),
+      this.delete(this.blogs, 'blogId'),
+      this.renderJson()
     )
 
     return [
-      new Comment.Route(this.app).build(),
+      ...new Entry.Routes(this.app).build(),
       router
     ]
   }

@@ -1,2 +1,2 @@
-export * as Comment from './comment'
+export * as Entry from './entry'
 export * from './router'

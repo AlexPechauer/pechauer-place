@@ -16,6 +16,7 @@ exports.setup = function (options, seedlink) {
 
 exports.up = function (db) {
   return db.runSql(`CREATE TABLE user_profile (id varchar(33) PRIMARY KEY
+  , branch_id varchar(33)
   , username varchar(50) NOT NULL
   , first_name varchar(50) NOT NULL
   , last_name varchar(50) NOT NULL
@@ -49,7 +50,15 @@ exports.up = function (db) {
   
   CREATE TABLE guestbook (id varchar(33) PRIMARY KEY
   , branch_id varchar(33) NOT NULL REFERENCES branch(id) ON DELETE CASCADE
-  , first_name varchar(50) NOT NULL
+  , created_by varchar(50)
+  , created_at TIMESTAMP
+  , updated_by varchar(50)
+  , updated_at TIMESTAMP
+  );
+
+  CREATE TABLE guestbook_entry (id varchar(33) PRIMARY KEY
+  , guestbook_id varchar(33) NOT NULL REFERENCES guestbook(id) ON DELETE CASCADE
+  , name varchar(50) NOT NULL
   , title varchar(50) NOT NULL
   , message varchar(280) NOT NULL
   , created_by varchar(50)
@@ -65,6 +74,14 @@ exports.up = function (db) {
   CREATE TABLE blog (id varchar(33) PRIMARY KEY
   , user_id varchar(50) NOT NULL REFERENCES user_profile(id) ON DELETE CASCADE
   , blog_type_id smallint NOT NULL REFERENCES blog_type(id) ON DELETE CASCADE
+  , created_by varchar(50)
+  , created_at TIMESTAMP
+  , updated_by varchar(50)
+  , updated_at TIMESTAMP
+  );
+
+  CREATE TABLE blog_entry (id varchar(33) PRIMARY KEY
+  , blog_id varchar(33) NOT NULL REFERENCES blog(id) ON DELETE CASCADE
   , content json NOT NULL
   , created_by varchar(50)
   , created_at TIMESTAMP
@@ -73,7 +90,7 @@ exports.up = function (db) {
   );
 
   CREATE TABLE blog_comment(id varchar(33) PRIMARY KEY
-  , blog_id varchar(33) NOT NULL REFERENCES blog ON DELETE CASCADE
+  , blog_entry_id varchar(33) NOT NULL REFERENCES blog_entry(id) ON DELETE CASCADE
   , user_id varchar(50) NOT NULL REFERENCES user_profile(id) ON DELETE CASCADE
   , message varchar(280) NOT NULL
   , created_by varchar(50)
@@ -86,11 +103,13 @@ exports.up = function (db) {
 exports.down = function (db) {
   return db.runSql(`DROP TABLE IF EXISTS user_profile CASCADE;
 	DROP TABLE IF EXISTS auth;
-	DROP TABLE IF EXISTS guestbook;
+	DROP TABLE IF EXISTS guestbook CASCADE;
+  DROP TABLE IF EXISTS guestbook_entry;
 	DROP TABLE IF EXISTS user_role;
 	DROP TABLE IF EXISTS blog_type CASCADE;
 	DROP TABLE IF EXISTS blog CASCADE;
-	DROP TABLE IF EXISTS blog_comment;
+	DROP TABLE IF EXISTS blog_entry CASCADE;
+  DROP TABLE IF EXISTS blog_comment;
   `)
 }
 
