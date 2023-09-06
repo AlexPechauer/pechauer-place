@@ -1,11 +1,11 @@
-import { BaseModel } from '../../base'
-import { Criteria } from '../../domain'
-import { createId } from '../../utils'
+import { BaseModel } from '../../../base'
+import { Criteria } from '../../../domain'
+import { createId } from '../../../utils'
 import * as Comment from './domain'
 
 export class Collection extends BaseModel<Comment.Value> {
 
-  name = 'blogComment'
+  name = 'blogEntryComment'
 
   columns = Object.keys(Comment.schema.describe().keys)
 

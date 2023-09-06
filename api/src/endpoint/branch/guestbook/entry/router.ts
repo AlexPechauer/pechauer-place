@@ -15,13 +15,17 @@ export class Route extends Base {
 
   build = (): Router => {
 
+    const pluralPath = '/entries'
+
+    const singularPath = `${pluralPath}/:entryId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.post('/:branchId/guestbook',
+    router.post(pluralPath,
       this.paramsInput(),
       this.bodyInput(),
       async (req: any, res: any, next: any) => {
@@ -34,13 +38,13 @@ export class Route extends Base {
       this.renderJson({ statusCode: 201 })
     )
 
-    router.get('/:branchId/guestbook/:entry',
+    router.get(singularPath,
     )
 
-    router.put('/:branchId/guestbook/:entry',
+    router.put(singularPath,
     )
 
-    router.delete('/:branchId/guestbook/:entry',
+    router.delete(singularPath,
     )
 
     return router

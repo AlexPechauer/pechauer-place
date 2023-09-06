@@ -6,34 +6,37 @@ import * as bodyParser from 'body-parser'
 
 export class Routes extends Base {
 
-  app: Express
-
-  entries: Model.Blog.Entry
+  guestbooks: Model.Branch.Guestbook.Collection
 
   constructor(app: Express) {
     super(app)
     this.app = app
 
-    this.entries = new Model.Blog.Entry()
+    this.guestbooks = new Model.Branch.Guestbook.Collection()
   }
 
   build = (): Router[] => {
+
+    const pluralPath = '/guestbooks'
+
+    const singularPath = `${pluralPath}/:guestbookId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.post('guestbook/',
+    router.post(pluralPath,
     )
 
-    router.get('entries/:entryId',
+    router.get(singularPath,
     )
 
-    router.put('entries/:entryId',
+    router.put(singularPath,
     )
 
-    router.delete('entries/:entryId',
+    router.delete(singularPath,
     )
 
     return [

@@ -18,13 +18,18 @@ export class Routes extends Base {
   }
 
   build = (): Router[] => {
+
+    const pluralPath = ''
+
+    const singularPath = `${pluralPath}/:blogId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.post('',
+    router.post(pluralPath,
       // this.authorize.can(),
       this.bodyInput(),
       this.validate(Model.Blog.schema),
@@ -36,16 +41,16 @@ export class Routes extends Base {
       this.renderJson({ statusCode: 201 })
     )
 
-    router.get('/:blogId',
+    router.get(singularPath,
       this.paramsInput(),
       this.getOne(this.blogs, 'blogId'),
       this.renderJson()
     )
 
-    router.put('/:blogId',
+    router.put(singularPath,
     )
 
-    router.delete('/:blogId',
+    router.delete(singularPath,
       this.paramsInput(),
       this.getOne(this.blogs, 'blogId'),
       this.delete(this.blogs, 'blogId'),

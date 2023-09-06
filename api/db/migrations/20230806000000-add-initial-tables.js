@@ -89,7 +89,7 @@ exports.up = function (db) {
   , updated_at TIMESTAMP
   );
 
-  CREATE TABLE blog_comment(id varchar(33) PRIMARY KEY
+  CREATE TABLE blog_entry_comment(id varchar(33) PRIMARY KEY
   , blog_entry_id varchar(33) NOT NULL REFERENCES blog_entry(id) ON DELETE CASCADE
   , user_id varchar(50) NOT NULL REFERENCES user_profile(id) ON DELETE CASCADE
   , message varchar(280) NOT NULL

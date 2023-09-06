@@ -48,15 +48,20 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     }
     text = `${text} ${whereStatement} RETURNING id;`
 
-    console.log('text', text)
-    console.log('values', values)
-
     const response = await this.dbCall<Item>(text, values)
     return response?.id
   }
 
-  async findAll(criteria: Criteria): Promise<Item | undefined> {
-    console.log('Db findAll function not implemented.')
+  //TODO: Paginate
+  async findAll(criteria: Criteria): Promise<Item[] | undefined> {
+    const values = criteria.map(c => c.value)
+    const whereStatement = whereStatementBuilder(criteria)
+    const text = `SELECT ${this.columnNames} FROM ${this.tableName} ${whereStatement};`
+    const rows = await this.dbCall<Item[]>(text, values)
+
+    //TODO: Clean this up
+    if (rows) { return (rows.map(row => objectNamesGenerator(row)) as Item[]) }
+
     return undefined
   }
 

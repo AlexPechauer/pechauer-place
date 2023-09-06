@@ -15,26 +15,30 @@ export class Route extends Base {
 
   build = (): Router => {
 
+    const pluralPath = '/comments'
+
+    const singularPath = `${pluralPath}/:commentId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.post('/:blogId/comments',
+    router.post(pluralPath,
     )
 
-    router.get('/:blogId/comments/:commentId',
+    router.get(singularPath,
       async (req: any, res: any, next: any) => {
         console.log('herere')
         await next()
       },
     )
 
-    router.put('/:blogId/comments/:commentId',
+    router.put(singularPath,
     )
 
-    router.delete('/:blogId/comments/:commentId',
+    router.delete(singularPath,
     )
 
     return router

@@ -15,6 +15,10 @@ export class Route extends Base {
 
   build = (): Router => {
 
+    const pluralPath = ''
+
+    const singularPath = `${pluralPath}/:user`
+
     const router = Router()
     router.use(
       this.acceptJson(),
@@ -23,7 +27,7 @@ export class Route extends Base {
 
     //TODO: Get all pagination
 
-    router.post('',
+    router.post(pluralPath,
       this.bodyInput(),
       this.validate(Model.User.schema),
       async (req: any, res: any, next: any) => {
@@ -44,13 +48,13 @@ export class Route extends Base {
       this.renderJson({ statusCode: 201 })
     )
 
-    router.get('/:user',
+    router.get(singularPath,
       this.paramsInput(),
       this.getOne(this.users, 'user'),
       this.renderJson()
     )
 
-    router.put('/:user',
+    router.put(singularPath,
       this.authorize.can(),
       this.bodyInput(),
       this.validate(Model.User.schema.fork(Model.modifiers, (schema) => schema.forbidden())),

@@ -56,7 +56,7 @@ exports.up = function (db) {
   INSERT INTO blog_entry(id, blog_id, content)
   VALUES('blog_entry_id_1', 'blog_id_1', '{"title": "First blog entry!"}');
 
-  INSERT INTO blog_comment(id, blog_entry_id, user_id, message)
+  INSERT INTO blog_entry_comment(id, blog_entry_id, user_id, message)
   VALUES('blog_comment_id_1', 'blog_entry_id_1', '1fe638b84d0683edc8b55588b28de60f', 'This is my first comment!');`
   )
 }

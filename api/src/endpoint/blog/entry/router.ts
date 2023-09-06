@@ -8,32 +8,37 @@ export class Routes extends Base {
 
   app: Express
 
-  entries: Model.Blog.Entry
+  entries: Model.Blog.Entry.Collection
 
   constructor(app: Express) {
     super(app)
     this.app = app
 
-    this.entries = new Model.Blog.Entry()
+    this.entries = new Model.Blog.Entry.Collection()
   }
 
   build = (): Router[] => {
+
+    const pluralPath = '/entries'
+
+    const singularPath = `${pluralPath}/:entryId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.post('entries/',
+    router.post(pluralPath,
     )
 
-    router.get('entries/:entryId',
+    router.get(singularPath,
     )
 
-    router.put('entries/:entryId',
+    router.put(singularPath,
     )
 
-    router.delete('entries/:entryId',
+    router.delete(singularPath,
     )
 
     return [

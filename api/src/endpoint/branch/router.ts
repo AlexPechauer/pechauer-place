@@ -13,19 +13,24 @@ export class Routes extends Base {
   }
 
   build = (): Router[] => {
+
+    const pluralPath = ''
+
+    const singularPath = `${pluralPath}/:branchId`
+
     const router = Router()
     router.use(
       this.acceptJson(),
       bodyParser.json()
     )
 
-    router.get('/:branchId',
+    router.get(singularPath,
     )
 
-    router.put('/:branchId',
+    router.put(singularPath,
     )
 
-    router.delete('/:branchId',
+    router.delete(singularPath,
     )
 
     return [
