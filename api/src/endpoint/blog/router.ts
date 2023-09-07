@@ -47,9 +47,6 @@ export class Routes extends Base {
       this.renderJson()
     )
 
-    router.put(singularPath,
-    )
-
     router.delete(singularPath,
       this.paramsInput(),
       this.getOne(this.blogs, 'blogId'),
@@ -58,8 +55,8 @@ export class Routes extends Base {
     )
 
     return [
-      ...new Entry.Routes(this.app).build(),
-      router
+      router,
+      ...new Entry.SubRoutes(this.app).build(singularPath)
     ]
   }
 }

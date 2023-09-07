@@ -79,6 +79,7 @@ export class Route extends Base {
 
     router.post('/login',
       //TODO: Handle login in without existing user. Currently it crashes
+      //TODO: Make case insensitive
       this.bodyInput(),
       this.validate(Joi.object({
         username: Joi.string().max(33),

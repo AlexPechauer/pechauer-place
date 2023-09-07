@@ -5,9 +5,15 @@ import { loadConfiguredCors } from '../component/config'
 export const startup = (app: Express) => {
   app.use(loadConfiguredCors())
 
+  app.use('', async (req: any, res: any, next: any) => {
+    res.statusCode = 404
+    await next()
+  })
+
   const auth = new Auth.Route(app)
   app.use(route('/auth'), auth.build())
 
+  //TODO: make sure there isn't some weird pass through
   const blog = new Blog.Routes(app)
   app.use(route('/blogs'), blog.build())
 
@@ -20,16 +26,16 @@ export const startup = (app: Express) => {
   const user = new User.Route(app)
   app.use(route('/users'), user.build())
 
-  //TODO: Don't think this works
-  app.use((req: any, res: any) => {
-    res.status(404)
+  app.use('', async (req: any, res: any, next: any) => {
+    await next()
+    if (res.statusCode === 404) {
+      res.json({
+        context: 'path',
+        body: 'page not found'
+      })
+    }
   })
 
-  //TODO: Don't think this works
-  app.use((err: any, req: any, res: any, next: any) => {
-    console.error(err.message)
-    res.status(500)
-  })
 };
 
 const route = (path?: string): string => {

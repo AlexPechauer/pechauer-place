@@ -3,7 +3,7 @@ import * as Model from '../../../../model'
 import { Base } from '../../../base'
 import * as bodyParser from 'body-parser'
 
-export class Route extends Base {
+export class SubRoutes extends Base {
 
   comments: Model.Blog.Entry.Comment.Collection
 
@@ -13,26 +13,34 @@ export class Route extends Base {
     this.comments = new Model.Blog.Entry.Comment.Collection()
   }
 
-  build = (): Router => {
+  build = (parentPath: string): Router => {
 
-    const pluralPath = '/comments'
+    const pluralPath = `${parentPath}/comments`
 
     const singularPath = `${pluralPath}/:commentId`
 
     const router = Router()
-    router.use(
+    router.use(parentPath,
       this.acceptJson(),
       bodyParser.json()
     )
 
     router.post(pluralPath,
+      this.bodyInput(),
+      async (req: any, res: any, next: any) => {
+        req.input = { blogEntryId: req.params.entryId, ...req.input }
+
+        console.log('req.input', req.input)
+        await next()
+      },
+      this.validate(Model.Blog.Entry.Comment.schema),
+      // this.add(this.comments),
+      // this.renderJson({ statusCode: 201 })
     )
 
     router.get(singularPath,
-      async (req: any, res: any, next: any) => {
-        console.log('herere')
-        await next()
-      },
+      this.getOne(this.comments, 'commentId'),
+      this.renderJson()
     )
 
     router.put(singularPath,
