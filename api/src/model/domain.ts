@@ -2,7 +2,7 @@ export interface IModel<Item> {
   add: (object: Item) => Promise<string | undefined>
   update: (object: Item, criteria: Criteria) => Promise<string | undefined>
   findOne: (criteria: Criteria) => Promise<Item | undefined>
-  findAll: (criteria: Criteria) => Promise<Item[] | undefined>
+  findAll: (criteria?: Criteria) => Promise<Item[] | undefined>
   delete: (criteria: Criteria) => Promise<void>
 }
 

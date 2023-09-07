@@ -86,9 +86,37 @@ export class Base {
     }
   }
 
+  getAll = <Item>(collection: IModel<Item>) => {
+    return async (req: any, res: any, next: any) => {
+      try {
+        // const criteria = [{ column: 'id', value: req.params[value] }]
+        //TODO: accept criteria
+        const instances = await collection.findAll()
+        if (!instances) {
+          res.statusCode = 404
+          res.json({
+            ctx: `global`,
+            body: 'unable to find instance'
+          })
+          return
+        }
+        req.response = instances
+      } catch (error) {
+        console.log('error finding item from database', error)
+        res.json({
+          ctx: `global`,
+          body: 'unable to find instance'
+        })
+        return
+      }
+      await next()
+    }
+  }
+
   getOne = <Item>(collection: IModel<Item>, value: string) => {
     return async (req: any, res: any, next: any) => {
       try {
+        //TODO: accept additional criteria
         const criteria = [{ column: 'id', value: req.params[value] }]
         const instance = await collection.findOne(criteria)
         if (!instance) {

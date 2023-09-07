@@ -28,6 +28,12 @@ export class SubRoutes extends Base {
       bodyParser.json()
     )
 
+    //TODO: This doesn't work right. Need to get the branch id
+    router.get(pluralPath,
+      this.getAll(this.entries),
+      this.renderJson()
+    )
+
     //TODO: Send back a jwt or something
     router.post(pluralPath,
       this.bodyInput(),

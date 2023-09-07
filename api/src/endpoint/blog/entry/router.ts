@@ -29,6 +29,11 @@ export class SubRoutes extends Base {
       bodyParser.json()
     )
 
+    router.get(pluralPath,
+      this.getAll(this.entries),
+      this.renderJson()
+    )
+
     router.post(pluralPath,
       this.paramsInput(),
       this.bodyInput(),

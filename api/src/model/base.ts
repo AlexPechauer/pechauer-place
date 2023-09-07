@@ -33,7 +33,7 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     const { columns, dollars, values } = genColsDolsVals(object)
     const text = `INSERT INTO ${this.tableName}(${columns}) VALUES(${dollars}) RETURNING id;`
 
-    const response = await this.dbCall<Item>(text, values)
+    const response = await this.dbCallOne<Item>(text, values)
     return response?.id
   }
 
@@ -48,17 +48,22 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     }
     text = `${text} ${whereStatement} RETURNING id;`
 
-    const response = await this.dbCall<Item>(text, values)
+    const response = await this.dbCallOne<Item>(text, values)
     return response?.id
   }
 
   //TODO: Paginate
-  async findAll(criteria: Criteria): Promise<Item[] | undefined> {
-    const values = criteria.map(c => c.value)
-    const whereStatement = whereStatementBuilder(criteria)
+  async findAll(criteria?: Criteria): Promise<Item[] | undefined> {
+    let values: string[] = []
+    let whereStatement = ''
+    if (criteria) {
+      values = criteria.map(c => c.value)
+      whereStatement = whereStatementBuilder(criteria)
+    }
     const text = `SELECT ${this.columnNames} FROM ${this.tableName} ${whereStatement};`
-    const rows = await this.dbCall<Item[]>(text, values)
-
+    console.log('text', text)
+    const rows = await this.dbCallMany<Item[]>(text, values)
+    console.log('rows', rows)
     //TODO: Clean this up
     if (rows) { return (rows.map(row => objectNamesGenerator(row)) as Item[]) }
 
@@ -69,7 +74,7 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     const values = criteria.map(c => c.value)
     const whereStatement = whereStatementBuilder(criteria)
     const text = `SELECT ${this.columnNames} FROM ${this.tableName} ${whereStatement};`
-    const row = await this.dbCall<Item>(text, values)
+    const row = await this.dbCallOne<Item>(text, values)
     //TODO: Clean this up
     if (row) { return (objectNamesGenerator(row) as Item) }
 
@@ -80,19 +85,25 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
     const values = criteria.map(c => c.value)
     const whereStatement = whereStatementBuilder(criteria)
     const text = `DELETE FROM ${this.tableName} ${whereStatement};`
-    await this.dbCall<Item>(text, values)
+    await this.dbCallOne<Item>(text, values)
   }
 
-  async dbCall<Item>(text: string, values: any[]): Promise<Item | undefined> {
+  async dbCallMany<Item>(text: string, values: any[]): Promise<Item[] | undefined> {
     try {
       const res = await (this.pool.query(text, values) as any)
-      return res.rows[0]
+      return res.rows
     } catch (err) {
       console.log('Db messed up or something, ', err.stack)
       console.log('text', text)
       console.log('values', values)
     }
     return undefined
+  }
+
+  async dbCallOne<Item>(text: string, values: any[]): Promise<Item | undefined> {
+    const res = await this.dbCallMany<Item>(text, values)
+    if (!res) { return undefined }
+    return res[0]
   }
 
 }

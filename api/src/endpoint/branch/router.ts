@@ -29,6 +29,11 @@ export class Routes extends Base {
       bodyParser.json()
     )
 
+    router.get(pluralPath,
+      this.getAll(this.branches),
+      this.renderJson()
+    )
+
     router.get(singularPath,
       this.getOne(this.branches, 'branchId'),
       this.renderJson()

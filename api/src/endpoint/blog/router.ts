@@ -29,6 +29,11 @@ export class Routes extends Base {
       bodyParser.json()
     )
 
+    router.get(pluralPath,
+      this.getAll(this.blogs),
+      this.renderJson()
+    )
+
     router.post(pluralPath,
       // this.authorize.can(),
       this.bodyInput(),
