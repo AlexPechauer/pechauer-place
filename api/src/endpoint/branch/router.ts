@@ -39,10 +39,6 @@ export class Routes extends Base {
       this.renderJson()
     )
 
-    //TODO: Admin can only
-    router.put(singularPath,
-    )
-
     return [
       new Guestbook.Entry.SubRoutes(this.app).build(singularPath),
       router

@@ -61,9 +61,7 @@ export class BaseModel<Item extends BaseItem> implements IModel<Item> {
       whereStatement = whereStatementBuilder(criteria)
     }
     const text = `SELECT ${this.columnNames} FROM ${this.tableName} ${whereStatement};`
-    console.log('text', text)
     const rows = await this.dbCallMany<Item[]>(text, values)
-    console.log('rows', rows)
     //TODO: Clean this up
     if (rows) { return (rows.map(row => objectNamesGenerator(row)) as Item[]) }
 

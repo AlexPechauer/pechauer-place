@@ -54,7 +54,7 @@ export class Route extends Base {
       })
       ),
       async (req: any, res: any, next: any) => {
-        await next()
+
         req.input.roles = req.input.roles.map((r: any) => Role[r])
 
         const userIdentifier = req.input.username ?? req.input.email
@@ -73,7 +73,7 @@ export class Route extends Base {
 
         const id = await this.auth.add({ userId: userResp.id, password: req.input.password, roles: req.input.roles })
         res.status(201).json({ id })
-        return
+        await next()
       }
     )
 
@@ -87,7 +87,6 @@ export class Route extends Base {
         password: Joi.string().min(8).max(20).required()
       })),
       async (req: any, res: any, next: any) => {
-        await next()
         const userIdentifier = req.input.username ?? req.input.email
         if (!userIdentifier) { this.fail(res, 422, `body.user`, 'value required'); return }
 
@@ -104,7 +103,7 @@ export class Route extends Base {
         const actor: Actor = { id: user.id, roles: roles }
 
         res.status(200).json(this.authorize.accredit(actor))
-        return
+        await next()
       }
     )
 

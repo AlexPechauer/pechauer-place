@@ -36,7 +36,7 @@ export class Authorize {
     return { token }
   }
 
-  can = (roles = Model.Auth.Role.all) => {
+  can = (roles = Model.Auth.Role.all, idParam?: string) => {
     return async (req: any, res: any, next: any) => {
       const authHeader = req.headers['authorization']
       if (!authHeader) { return res.status(403).json({ message: 'auth-token missing' }) }
@@ -47,7 +47,10 @@ export class Authorize {
         const expired = this.jwtTimeout <= (new Date().getTime() - new Date(payload.timestamp).getTime())
         if (expired) { return res.status(403).json({ message: 'unauthorization' }) }
 
-        const can = roles.some(role => payload.actor.roles.includes(role))
+        let can = roles.some(role => payload.actor.roles.includes(role))
+
+        if (idParam) { can = req.params[idParam] === payload.actor.id }
+
         if (!can) { return res.status(403).json({ message: 'unauthorization' }) }
         req.input = { userId: payload.actor.id, ...req.input }
       } catch (err) {

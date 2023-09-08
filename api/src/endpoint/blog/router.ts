@@ -3,6 +3,7 @@ import { Router, Express } from 'express'
 import * as Model from '../../model'
 import { Base } from '../base'
 import * as bodyParser from 'body-parser'
+import { Role } from '../../model/auth/role/domain'
 
 export class Routes extends Base {
 
@@ -35,7 +36,7 @@ export class Routes extends Base {
     )
 
     router.post(pluralPath,
-      // this.authorize.can(),
+      this.authorize.can([Role.SUPER_ADMIN]),
       this.bodyInput(),
       this.validate(Model.Blog.schema),
       async (req: any, res: any, next: any) => {
@@ -53,6 +54,7 @@ export class Routes extends Base {
     )
 
     router.delete(singularPath,
+      this.authorize.can([Role.SUPER_ADMIN]),
       this.paramsInput(),
       this.getOne(this.blogs, 'blogId'),
       this.delete(this.blogs, 'blogId'),

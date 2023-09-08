@@ -1,7 +1,9 @@
 import { Express } from 'express'
 import Joi = require('joi')
-import { IModel } from '../model'
+import { Criteria, IModel, Predicate } from '../model'
 import * as Auth from '../component/auth'
+
+export type Middleware = (req: any, res: any, next: any) => Promise<void>
 
 export class Base {
   app: Express
@@ -63,10 +65,10 @@ export class Base {
     }
   }
 
-  update = <Item>(collection: IModel<Item>, value: string) => {
+  update = <Item>(collection: IModel<Item>, idParam: string) => {
     return async (req: any, res: any, next: any) => {
       const obj = { ...req.response, ...req.input }
-      const criteria = [{ column: 'id', value: req.params[value] }]
+      const criteria = [{ column: 'id', value: req.params[idParam] }]
       try {
         const id = await collection.update(obj, criteria)
         if (id) {
@@ -113,11 +115,18 @@ export class Base {
     }
   }
 
-  getOne = <Item>(collection: IModel<Item>, value: string) => {
+  getOne: {
+    <Item>(collection: IModel<Item>, idParam: string): Middleware
+    <Item>(collection: IModel<Item>, criteria: Criteria): Middleware
+  } = <Item>(collection: IModel<Item>, idParamOrCriteria: string | Criteria) => {
     return async (req: any, res: any, next: any) => {
       try {
-        //TODO: accept additional criteria
-        const criteria = [{ column: 'id', value: req.params[value] }]
+        let criteria: Criteria
+        if (typeof idParamOrCriteria === 'string') {
+          criteria = [{ column: 'id', value: req.params[idParamOrCriteria] }]
+        } else {
+          criteria = idParamOrCriteria.map((predicate: Predicate) => ({ ...predicate, value: req.params[predicate.value] }))
+        }
         const instance = await collection.findOne(criteria)
         if (!instance) {
           res.statusCode = 404
@@ -140,9 +149,9 @@ export class Base {
     }
   }
 
-  delete = <Item>(collection: IModel<Item>, value: string) => {
+  delete = <Item>(collection: IModel<Item>, idParam: string) => {
     return async (req: any, res: any, next: any) => {
-      const criteria = [{ column: 'id', value: req.params[value] }]
+      const criteria = [{ column: 'id', value: req.params[idParam] }]
       try {
         await collection.delete(criteria)
       } catch (error) {

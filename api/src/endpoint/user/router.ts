@@ -2,6 +2,7 @@ import { Router, Express } from 'express'
 import * as Model from '../../model'
 import { Base } from '../base'
 import * as bodyParser from 'body-parser'
+import { Role } from '../../model/auth/role/domain'
 
 export class Route extends Base {
 
@@ -25,7 +26,11 @@ export class Route extends Base {
       bodyParser.json()
     )
 
-    //TODO: Get all pagination
+    //TODO: Truncate the data that is returned
+    router.get(pluralPath,
+      this.getAll(this.users),
+      this.renderJson()
+    )
 
     router.post(pluralPath,
       this.bodyInput(),
@@ -49,13 +54,17 @@ export class Route extends Base {
     )
 
     router.get(singularPath,
-      this.paramsInput(),
-      this.getOne(this.users, 'user'),
+      this.authorize.can([Role.SUPER_ADMIN, Role.SUPER_USER, Role.USER], 'user'),
+      this.getOne(this.users,
+        [
+          { column: 'id', value: 'user', combinator: Model.Combinator.OR },
+          { column: 'username', value: 'user', combinator: Model.Combinator.OR }
+        ] as Model.Criteria),
       this.renderJson()
     )
 
     router.put(singularPath,
-      this.authorize.can(),
+      this.authorize.can([Role.SUPER_ADMIN, Role.SUPER_USER, Role.USER], 'user'),
       this.bodyInput(),
       this.validate(Model.User.schema.fork(Model.modifiers, (schema) => schema.forbidden())),
       this.getOne(this.users, 'user'),
@@ -87,8 +96,8 @@ export class Route extends Base {
       this.renderJson({ statusCode: 200 })
     )
 
-    router.delete('/:user',
-      this.paramsInput(),
+    router.delete(singularPath,
+      this.authorize.can([Role.SUPER_ADMIN, Role.SUPER_USER, Role.USER], 'user'),
       this.getOne(this.users, 'user'),
       this.delete(this.users, 'user'),
       this.renderJson()
